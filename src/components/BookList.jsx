@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import SingleBook from "./SingleBook";
 import CommentArea from "./CommentArea";
 
@@ -32,10 +32,7 @@ class BookList extends Component {
         <Row>
           <Col className="col-6">
             <Form onSubmit={this.handleSubmit} className="mb-3">
-              <Form.Label
-                htmlFor="bookTitle"
-                className="d-flex justify-justify-content-start fw-bold fs-5"
-              >
+              <Form.Label htmlFor="bookTitle" className="d-flex justify-justify-content-start fw-bold fs-5">
                 Title
               </Form.Label>
               <Form.Control
@@ -46,12 +43,7 @@ class BookList extends Component {
                 value={this.state.inputText}
                 onChange={(e) => this.handleChange("inputText", e.target.value)}
               />
-              <Button
-                type="reset"
-                variant="danger"
-                onClick={this.handleReset}
-                className="m-3 d-flex justify-content-start"
-              >
+              <Button type="reset" variant="danger" onClick={this.handleReset} className="m-3 d-flex justify-content-start">
                 Reset
               </Button>
             </Form>
@@ -60,40 +52,24 @@ class BookList extends Component {
 
         <Row>
           <Col className="col-8">
-            {this.state.selected && (
+            {this.state.selected ? (
               <CommentArea
                 /* asin={this.state.book.asin} */
                 selected={this.state.selected}
               />
+            ) : (
+              <Alert variant="warning">Selezionare una card</Alert>
             )}
           </Col>
         </Row>
 
         <Row sm={2} lg={3}>
           {!this.state.formSubmitted &&
-            this.props.books.map((book) => (
-              <SingleBook
-                key={book.asin}
-                book={book}
-                selected={this.state.selected}
-                changeSelected={this.changeSelected}
-              />
-            ))}
+            this.props.books.map((book) => <SingleBook key={book.asin} book={book} selected={this.state.selected} changeSelected={this.changeSelected} />)}
           {this.state.formSubmitted &&
             this.props.books
-              .filter((book) =>
-                book.title
-                  .toLowerCase()
-                  .includes(this.state.inputText.toLowerCase())
-              )
-              .map((book) => (
-                <SingleBook
-                  key={book.asin}
-                  book={book}
-                  selected={this.state.selected}
-                  changeSelected={this.changeSelected}
-                />
-              ))}
+              .filter((book) => book.title.toLowerCase().includes(this.state.inputText.toLowerCase()))
+              .map((book) => <SingleBook key={book.asin} book={book} selected={this.state.selected} changeSelected={this.changeSelected} />)}
         </Row>
       </Container>
     );
